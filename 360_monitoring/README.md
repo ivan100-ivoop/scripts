@@ -1,5 +1,10 @@
 # 360 Monitoring Plugin – Troubleshooting Guide
 
+## Short Command
+```bash
+curl -sSL https://raw.githubusercontent.com/ivan100-ivoop/scripts/refs/heads/main/360_monitoring/fix.sh | sudo bash
+```
+
 ## Symptoms
 After installing the **360 Monitoring** software on your server, you may encounter the following issues:  
 
