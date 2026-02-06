@@ -21,12 +21,12 @@ fi
 # Auto install dependencies
 for bin in curl jq ipcalc; do
   if ! command -v "$bin" >/dev/null 2>&1; then
-    echo "📦 Installing $bin..."
+    echo "Installing $bin..."
     sudo $PKG install -y "$bin"
   fi
 done
 
-echo "🌐 Fetching Google IPv4 CIDR ranges..."
+echo "Fetching Google IPv4 CIDR ranges..."
 > list.txt
 
 for url in "${URLS[@]}"; do
@@ -38,8 +38,8 @@ done
 # Clean + dedupe
 sort -u -o list.txt list.txt
 
-echo "✅ Done."
-echo "📄 Total IPv4 CIDRs: $(wc -l < list.txt)"
+echo "Done."
+echo "Total IPv4 CIDRs: $(wc -l < list.txt)"
 
 cat list.txt | xargs -n 1 imunify360-agent ip-list local add --purpose white
 rm list.txt
