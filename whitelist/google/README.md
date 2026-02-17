@@ -1,4 +1,4 @@
-# Google IPv4 ranges – Auto wwhitelist
+# Google IPv4 ranges – Auto whitelist
 
 ## Short Command
 ```bash
