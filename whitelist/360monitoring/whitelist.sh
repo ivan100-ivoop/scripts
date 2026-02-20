@@ -3,7 +3,6 @@ set -e
 
 URL="https://app.360monitoring.com/whitelist.php"
 
-# Detect package manager
 if command -v dnf >/dev/null 2>&1; then
   PKG=dnf
 elif command -v yum >/dev/null 2>&1; then
@@ -13,7 +12,6 @@ else
   exit 1
 fi
 
-# Auto install dependencies
 for bin in curl ipcalc; do
   if ! command -v "$bin" >/dev/null 2>&1; then
     echo "Installing $bin..."
@@ -22,11 +20,10 @@ for bin in curl ipcalc; do
 done
 
 echo "Fetching 360Monitoring whitelist IPs..."
-# Download and filter only IPv4 addresses
 IPS=$(curl -s "$URL" | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}')
 
 if [ -z "$IPS" ]; then
-  echo "❌ No IPs found at $URL"
+  echo "No IPs found at $URL"
   exit 1
 fi
 
