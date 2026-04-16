@@ -1,45 +1,78 @@
 #!/usr/bin/env bash
 set -e
 
-URLS=(
-  "https://developers.google.com/static/search/apis/ipranges/special-crawlers.json"
-  "https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers.json"
-  "https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json"
-  "https://developers.google.com/static/search/apis/ipranges/googlebot.json"
+# Hardcoded Google IP whitelist
+CIDRS=(
+  # IPv6
+  "2404:f340::/32"
+  "2001:4860:4801::/48"
+  # IPv4
+  "108.177.2.0/24"
+  "192.178.16.0/24"
+  "192.178.17.0/24"
+  "209.85.238.0/24"
+  "66.249.87.0/24"
+  "66.249.89.0/24"
+  "66.249.90.0/24"
+  "66.249.91.0/24"
+  "66.249.92.0/24"
+  "72.14.199.0/24"
+  "74.125.148.0/24"
+  "74.125.149.0/24"
+  "74.125.150.0/24"
+  "74.125.151.0/24"
+  "74.125.216.0/24"
+  "74.125.217.0/24"
+  "74.125.218.0/24"
+  "74.125.219.0/24"
+  "192.178.4.0/24"
+  "192.178.5.0/24"
+  "192.178.6.0/24"
+  "192.178.7.0/24"
+  "66.249.64.0/24"
+  "66.249.64.0/19"
+  "66.249.65.0/24"
+  "66.249.66.0/24"
+  "66.249.67.0/24"
+  "66.249.68.0/24"
+  "66.249.69.0/24"
+  "66.249.70.0/24"
+  "66.249.71.0/24"
+  "66.249.72.0/24"
+  "66.249.73.0/24"
+  "66.249.74.0/24"
+  "66.249.75.0/24"
+  "66.249.76.0/24"
+  "66.249.77.0/24"
+  "66.249.78.0/24"
+  "66.249.79.0/24"
+  "64.233.160.0/19"
+  "66.102.0.0/20"
+  "72.14.192.0/18"
+  "74.125.0.0/16"
+  "108.177.8.0/21"
+  "108.177.96.0/19"
+  "172.217.0.0/16"
+  "173.194.0.0/16"
+  "209.85.128.0/17"
+  "216.58.192.0/19"
+  "216.239.32.0/19"
 )
 
-# Detect package manager
-if command -v dnf >/dev/null 2>&1; then
-  PKG=dnf
-elif command -v yum >/dev/null 2>&1; then
-  PKG=yum
-else
-  echo "❌ No supported package manager found"
-  exit 1
-fi
+echo "Whitelisting ${#CIDRS[@]} Google IP ranges in Imunify360..."
 
-# Auto install dependencies
-for bin in curl jq ipcalc; do
-  if ! command -v "$bin" >/dev/null 2>&1; then
-    echo "Installing $bin..."
-    sudo $PKG install -y "$bin"
+SUCCESS=0
+FAILED=0
+
+for cidr in "${CIDRS[@]}"; do
+  if imunify360-agent ip-list local add --purpose white "$cidr"; then
+    echo "  $cidr"
+    ((SUCCESS++))
+  else
+    echo "  Failed: $cidr"
+    ((FAILED++))
   fi
 done
 
-echo "Fetching Google IPv4 CIDR ranges..."
-> list.txt
-
-for url in "${URLS[@]}"; do
-  curl -s "$url" \
-    | jq -r '.prefixes[] | select(.ipv4Prefix != null) | .ipv4Prefix' \
-    >> list.txt
-done
-
-# Clean + dedupe
-sort -u -o list.txt list.txt
-
-echo "Done."
-echo "Total IPv4 CIDRs: $(wc -l < list.txt)"
-
-cat list.txt | xargs -n 1 imunify360-agent ip-list local add --purpose white
-rm list.txt
+echo ""
+echo "Done. Success: $SUCCESS | Failed: $FAILED"
