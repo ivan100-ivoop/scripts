@@ -1,4 +1,4 @@
-## This information is based on guidance from cPanel: cPanel 360 Monitoring Plugin Not Displaying Data After Installation
+## This information is based on guidance from cPanel: [CVE-2026-41940](https://support.cpanel.net/hc/en-us/articles/40073787579671-Security-CVE-2026-41940-cPanel-WHM-WP2-Security-Update-04-28-2026)
 
 ## Short Command
 ```bash
