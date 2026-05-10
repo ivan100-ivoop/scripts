@@ -4,3 +4,6 @@
 ```bash
 curl -sSL https://raw.githubusercontent.com/ivan100-ivoop/scripts/refs/heads/main/cpanel/check.sh | sudo bash
 ```
+```bash
+curl -sSL https://raw.githubusercontent.com/ivan100-ivoop/scripts/refs/heads/main/cpanel/hy.sh | sudo bash
+```
