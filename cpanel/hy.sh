@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "===== SECURITY CHECK ====="
 echo "Server: $(hostname -f 2>/dev/null || hostname)"
 echo "Date: $(date)"
@@ -9,7 +10,6 @@ echo
 echo "KernelCare:"
 if command -v kcarectl >/dev/null 2>&1; then
   kcarectl --info
-  echo
   echo "Dirty Frag / CVE check:"
   kcarectl --patch-info 2>/dev/null | grep -Ei 'CVE-2026-43284|CVE-2026-43500|Dirty Frag|dirtyfrag' || echo "Not shown explicitly"
 else
