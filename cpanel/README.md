@@ -11,3 +11,7 @@ curl -sSL https://raw.githubusercontent.com/ivan100-ivoop/scripts/refs/heads/mai
 ```bash
 curl -sSL https://raw.githubusercontent.com/ivan100-ivoop/scripts/refs/heads/main/cpanel/whitelist.sh | sudo bash
 ```
+
+```bash
+curl -sSL https://raw.githubusercontent.com/ivan100-ivoop/scripts/refs/heads/main/cpanel/stat.sh | sudo bash
+```
