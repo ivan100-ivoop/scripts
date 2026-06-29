@@ -30,6 +30,7 @@ fi
 echo "Whitelisting IPs in Imunify360..."
 while read -r ip; do
   imunify360-agent ip-list local add --purpose white "$ip" || true
+  csf -a "$ip" || true
 done <<< "$IPS"
 
 echo "Done. Total IPs whitelisted: $(echo "$IPS" | wc -l)"
